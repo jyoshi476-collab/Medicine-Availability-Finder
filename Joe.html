@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Medicine Availability Finder</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+        }
+
+        header {
+            background: #1769aa;
+            color: white;
+            text-align: center;
+            padding: 25px;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 25px;
+        }
+
+        .search-box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #1769aa;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0d4f82;
+        }
+
+        #results {
+            margin-top: 25px;
+        }
+
+        .pharmacy {
+            background: white;
+            margin-bottom: 15px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+        }
+
+        .available {
+            color: green;
+            font-weight: bold;
+        }
+
+        .not-available {
+            color: red;
+            font-weight: bold;
+        }
+
+        .message {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>💊 Medicine Availability Finder</h1>
+    <p>Find medicines at nearby pharmacies</p>
+</header>
+
+<div class="container">
+
+    <div class="search-box">
+
+        <h2>Search Medicine</h2>
+
+        <input
+            type="text"
+            id="medicineInput"
+            placeholder="Enter medicine name"
+        >
+
+        <button onclick="searchMedicine()">
+            🔍 Search
+        </button>
+
+    </div>
+
+    <div id="results"></div>
+
+</div>
+
+<script>
+
+    // Sample medicine database
+    const medicines = [
+        {
+            name: "paracetamol",
+            pharmacy: "Apollo Pharmacy",
+            location: "Srikakulam",
+            distance: "1.2 km",
+            available: true
+        },
+
+        {
+            name: "paracetamol",
+            pharmacy: "MedPlus",
+            location: "Srikakulam",
+            distance: "2.0 km",
+            available: false
+        },
+
+        {
+            name: "cetirizine",
+            pharmacy: "Sri Sai Pharmacy",
+            location: "Srikakulam",
+            distance: "1.5 km",
+            available: true
+        },
+
+        {
+            name: "ibuprofen",
+            pharmacy: "MedPlus",
+            location: "Srikakulam",
+            distance: "2.3 km",
+            available: true
+        }
+    ];
+
+
+    function searchMedicine() {
+
+        const input =
+            document.getElementById("medicineInput")
+            .value
+            .toLowerCase()
+            .trim();
+
+        const results =
+            document.getElementById("results");
+
+        results.innerHTML = "";
+
+
+        if (input === "") {
+
+            results.innerHTML =
+                `<div class="message">
+                    Please enter a medicine name.
+                </div>`;
+
+            return;
+        }
+
+
+        const foundMedicines =
+            medicines.filter(
+                medicine => medicine.name === input
+            );
+
+
+        if (foundMedicines.length === 0) {
+
+            results.innerHTML =
+                `<div class="message">
+                    ❌ Medicine not found in our database.
+                </div>`;
+
+            return;
+        }
+
+
+        foundMedicines.forEach(medicine => {
+
+            const status =
+                medicine.available
+                ? `<span class="available">
+                    🟢 AVAILABLE
+                   </span>`
+                : `<span class="not-available">
+                    🔴 NOT AVAILABLE
+                   </span>`;
+
+
+            results.innerHTML += `
+                <div class="pharmacy">
+
+                    <h3>🏪 ${medicine.pharmacy}</h3>
+
+                    <p>
+                        <strong>Medicine:</strong>
+                        ${medicine.name}
+                    </p>
+
+                    <p>
+                        📍 ${medicine.location}
+                    </p>
+
+                    <p>
+                        📏 ${medicine.distance}
+                    </p>
+
+                    <p>
+                        <strong>Status:</strong>
+                        ${status}
+                    </p>
+
+                </div>
+            `;
+        });
+
+    }
+
+</script>
+
+</body>
+</html>
